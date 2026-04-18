@@ -1,6 +1,9 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+double lastTime = 0.d;
+int frameCount = 0;
+
 int main(){
 	if (!glfwInit()){ // инициализируем GLFW
 		std::cerr << "failed to initialize GLFW\n";
@@ -15,8 +18,17 @@ int main(){
 	}
 	
 	glfwMakeContextCurrent(window); // выбираем где работать
-
+	lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)){
+		frameCount ++;
+		double currentTime = glfwGetTime();
+		if(currentTime - lastTime >= 1.0){
+			std::string title = "flw2016 opengl test | fps: " + std::to_string(frameCount);
+
+			glfwSetWindowTitle(window, title.c_str());
+			frameCount = 0;
+			lastTime = currentTime;
+		}
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 
